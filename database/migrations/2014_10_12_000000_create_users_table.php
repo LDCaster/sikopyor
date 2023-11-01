@@ -18,8 +18,12 @@ return new class extends Migration
             $table->string('jenis_kelamin');
             $table->string('alamat');
             // Add other attributes as needed
+            $table->string('img')->nullable();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
-
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RoleModel;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -12,12 +13,13 @@ class UsersController extends Controller
      */
     public function index()
     {
-
+        $role = RoleModel::get();
         $users = User::with(['role'])->get();
 
         return view('users.index', [
             'title' => 'Data users',
-            'users' => $users
+            'users' => $users,
+            'role' => $role
         ]);
     }
 
