@@ -65,10 +65,11 @@
                                                     data-bs-toggle="dropdown"><i
                                                         class="bx bx-dots-vertical-rounded"></i></button>
                                                 <div class="dropdown-menu">
-                                                    <button class="dropdown-item" value="{{ $u->id }}"
-                                                        data-toggle="modal" data-target="#ModalEdit">
-                                                        <i class="bx bx-edit-alt me-1"></i> Edit
-                                                    </button>
+                                                    <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
+                                                        data-bs-target="#modalEdit" data-id="{{ $u->id }}">
+                                                        <i class="bx bx-edit-alt me-1"></i>
+                                                        Edit
+                                                    </a>
                                                     <form class="d-inline" style="display: inline"
                                                         action="{{ url('/users', $u->id) }}" method="POST">
                                                         @method('delete')
@@ -92,6 +93,7 @@
 
         </div>
     </div>
+
     <!-- Modal Tambah -->
     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -203,20 +205,21 @@
     </div>
 
     <!-- Modal Edit -->
-    <div class="modal fade" id="ModalEdit" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalCenterTitle">Edit Data Users</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="post" action="/users" enctype="multipart/form-data">
+                <form method="POST" id="editForm" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="modal-body">
                         <div class="row">
                             <div class="col mb-3">
                                 <label for="nameWithTitle" class="form-label">Role</label>
-                                <select id="role_id" name="role_id" class="select2 form-select"
+                                <select id="role_id_edit" name="role_id" class="select2 form-select"
                                     data-allow-clear="true">
                                     <option value="">--- Pilih Role ---</option>
                                     @foreach ($role as $r)
@@ -233,7 +236,7 @@
                         <div class="row g-2">
                             <div class="col mb-0">
                                 <label for="emailWithTitle" class="form-label">Nama </label>
-                                <input type="text" id="nama" name="nama" class="form-control"
+                                <input type="text" id="nama_edit" name="nama" class="form-control"
                                     placeholder="Nama" />
                                 @error('nama')
                                     <div class="text-danger">{{ $message }}</div>
@@ -243,7 +246,7 @@
                         <div class="row g-2">
                             <div class="col mb-0">
                                 <label for="dobWithTitle" class="form-label">No Telp</label>
-                                <input type="text" id="no_telp" name="no_telp" class="form-control"
+                                <input type="text" id="no_telp_edit" name="no_telp" class="form-control"
                                     placeholder="No Telp" />
                                 @error('no_telp')
                                     <div class="text-danger">{{ $message }}</div>
@@ -251,7 +254,7 @@
                             </div>
                             <div class="col mb-0">
                                 <label for="dobWithTitle" class="form-label">Jenis Kelamin</label>
-                                <select id="jenis_kelamin" name="jenis_kelamin" class="select2 form-select"
+                                <select id="jenis_kelamin_edit" name="jenis_kelamin" class="select2 form-select"
                                     data-allow-clear="true">
                                     <option value="">--- Pilih Jenis Kelamin ---</option>
                                     <option value="Laki-Laki">Laki-Laki</option>
@@ -265,7 +268,7 @@
                         <div class="row g-2">
                             <div class="col mb-0">
                                 <label for="emailWithTitle" class="form-label">Alamat </label>
-                                <input type="text" id="alamat" name="alamat" class="form-control"
+                                <input type="text" id="alamat_edit" name="alamat" class="form-control"
                                     placeholder="Alamat" />
                                 @error('alamat')
                                     <div class="text-danger">{{ $message }}</div>
@@ -275,16 +278,27 @@
                         <div class="row g-2">
                             <div class="col mb-0">
                                 <label for="img" class="form-label">Foto</label>
-                                <input class="form-control" type="file" id="img" name="img">
+                                <input class="form-control" type="file" id="img_edit" name="img">
                                 @error('img')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
+
                         <div class="row g-2">
                             <div class="col mb-0">
+                                <img id="img-preview" style="max-width: 200px; max-height: 200px;"
+                                    src="{{ url('/assets/img/placeholder.png') }}" alt="Preview">
+                                @error('img')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row g-2 mt-3">
+                            <div class="col mb-0">
                                 <label for="emailWithTitle" class="form-label">Email </label>
-                                <input type="email" id="email" name="email" class="form-control"
+                                <input type="email" id="email_edit" name="email" class="form-control"
                                     placeholder="Alamat" />
                                 @error('email')
                                     <div class="text-danger">{{ $message }}</div>
@@ -294,7 +308,7 @@
                         <div class="row g-2">
                             <div class="col mb-0">
                                 <label for="emailWithTitle" class="form-label">Password </label>
-                                <input type="password" id="password" name="password" class="form-control"
+                                <input type="password" id="password_edit" name="password" class="form-control"
                                     placeholder="Password" />
                                 @error('password')
                                     <div class="text-danger">{{ $message }}</div>
@@ -321,25 +335,34 @@
         @endif
 
         $(document).ready(function() {
-
             $('.edit').click(function() {
-                const id = $(this).val()
+                const id = $(this).data('id'); // Menggunakan data-id
                 $.ajax({
-                    url: {{ url('/users/${id}/edit') }},
+                    url: `/users/${id}/edit`,
                     method: "get",
                     success: function(data) {
-                        $('#role_id').val(data.role_id)
-                        $('#nama').val(data.nama)
-                        $('#no_telp').val(data.no_telp)
-                        $('#jenis_kelamin').val(data.jenis_kelamin)
-                        $('#alamat').val(data.alamat)
-                        $('#img').val(data.img)
-                        $('#email').val(data.email)
-                        $('#ModalEdit form').attr('action',
-                            {{ url('users/${id}') }})
+                        console.log(data);
+                        $('#role_id_edit').val(data.role_id);
+                        $('#nama_edit').val(data.nama);
+                        $('#no_telp_edit').val(data.no_telp);
+                        $('#jenis_kelamin_edit').val(data.jenis_kelamin);
+                        $('#alamat_edit').val(data.alamat);
+                        $('#email_edit').val(data.email);
+                        // Tidak perlu mengisi nilai password dalam form edit
+                        $('#editForm').attr('action', `/users/${id}`); // Perbaikan nama form
+
+                        // Periksa jika ada gambar
+                        if (data.img) {
+                            $('#img-preview').attr('src', '{{ url('/assets/img/profile') }}/' +
+                                data.img);
+                        } else {
+                            // Jika tidak ada gambar, tampilkan placeholder
+                            $('#img-preview').attr('src',
+                                '{{ url('/assets/img/placeholder.png') }}');
+                        }
                     }
-                })
-            })
-        })
+                });
+            });
+        });
     </script>
 @endsection

@@ -53,7 +53,7 @@ class UsersController extends Controller
         $request->validate([
             'role_id' => 'required|integer',
             'name' => 'max:255',
-            'no_telp' => 'integer',
+            'no_telp' => 'max:13',
             'jenis_kelamin' => 'max:255|required',
             'alamat' => 'max:255',
             'img' => 'mimes:jpeg,jpg,png,gif,svg|image|required',
@@ -88,17 +88,46 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return response()->json($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'role_id' => 'required|integer',
+            'name' => 'max:255',
+            'no_telp' => 'max:13',
+            'jenis_kelamin' => 'max:255|required',
+            'alamat' => 'max:255',
+            'img' => 'mimes:jpeg,jpg,png,gif,svg|image',
+            'email' => 'max:255|required',
+        ]);
+
+        $user = User::findOrFail($id);
+        $input = $request->except('password');
+
+        // Periksa jika ada pengiriman gambar baru
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $destinationPath = 'assets/img/profile';
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['img'] = $profileImage;
+        }
+        // Update password jika diminta
+        if ($request->filled('password')) {
+            $input['password'] = bcrypt($request->input('password'));
+        }
+        // Update user
+        $user->update($input);
+
+        return redirect('/users')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
