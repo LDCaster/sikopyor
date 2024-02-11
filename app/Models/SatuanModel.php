@@ -11,6 +11,17 @@ class SatuanModel extends Model
     protected $table = 'satuan';
 
     protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($satuan) {
+            // Set nilai satuan_id pada semua produk yang memiliki satuan ini menjadi null
+            $satuan->produk()->update(['satuan_id' => null]);
+        });
+    }
+
     public function produk()
     {
         return $this->hasMany(ProdukModel::class, 'satuan_id');

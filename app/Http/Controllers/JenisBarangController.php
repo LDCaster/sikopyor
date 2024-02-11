@@ -86,9 +86,9 @@ class JenisBarangController extends Controller
         $jenisbarang = JenisBarangModel::find($id);
 
         // Cek apakah satuan memiliki keterkaitan dengan produk
-        if ($jenisbarang->produk()->exists()) {
-            return redirect('/jenis-barang')->with('error', 'Tidak dapat menghapus jenis barang yang memiliki keterkaitan dengan produk!');
-        }
+        // if ($jenisbarang->produk()->exists()) {
+        //     return redirect('/jenis-barang')->with('error', 'Tidak dapat menghapus jenis barang yang memiliki keterkaitan dengan produk!');
+        // }
 
         // Jika tidak ada keterkaitan, hapus satuan
         $jenisbarang->delete();

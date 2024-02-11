@@ -11,11 +11,17 @@ class JenisBarangModel extends Model
     protected $table = 'jenis_barang';
 
     protected $guarded = [];
-    public function users()
 
+    protected static function boot()
     {
-        return $this->belongsTo(User::class, 'jenis_barang');
+        parent::boot();
+
+        static::deleting(function ($jenis_barang) {
+            // Set nilai jenis_barang_id pada semua produk yang memiliki jenis_barang ini menjadi null
+            $jenis_barang->produk()->update(['jenis_barang_id' => null]);
+        });
     }
+
     public function produk()
     {
         return $this->hasMany(ProdukModel::class, 'jenis_barang_id');

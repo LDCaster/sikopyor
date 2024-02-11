@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('nama_produk');
             $table->string('harga_produk');
             $table->integer('stock');
-            $table->foreignId('satuan_id')->constrained('satuan');
-            $table->foreignId('jenis_barang_id')->constrained('jenis_barang');
+            $table->foreignId('satuan_id')->nullable()->constrained('satuan');
+            $table->foreignId('jenis_barang_id')->nullable()->constrained('jenis_barang');
             $table->string('barcode');
             $table->string('foto_produk');
             // Add other attributes as needed

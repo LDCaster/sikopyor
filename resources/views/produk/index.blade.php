@@ -46,8 +46,20 @@
                                         </td>
                                         <td>{{ $p->harga_produk }}</td>
                                         <td>{{ $p->stock }}</td>
-                                        <td>{{ $p->satuan->nama_satuan }}</td>
-                                        <td>{{ $p->jenis_barang->nama_jenis }}</td>
+                                        <td>
+                                            @if ($p->satuan)
+                                                {{ $p->satuan->nama_satuan }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($p->jenis_barang)
+                                                {{ $p->jenis_barang->nama_jenis }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($p->foto_produk)
                                                 <img style="max-width:100px; max-height:100px"

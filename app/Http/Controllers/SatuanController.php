@@ -83,9 +83,9 @@ class SatuanController extends Controller
         $satuan = SatuanModel::find($id);
 
         // Cek apakah satuan memiliki keterkaitan dengan produk
-        if ($satuan->produk()->exists()) {
-            return redirect('/satuan')->with('error', 'Tidak dapat menghapus satuan yang memiliki keterkaitan dengan produk!');
-        }
+        // if ($satuan->produk()->exists()) {
+        //     return redirect('/satuan')->with('error', 'Tidak dapat menghapus satuan yang memiliki keterkaitan dengan produk!');
+        // }
 
         // Jika tidak ada keterkaitan, hapus satuan
         $satuan->delete();
