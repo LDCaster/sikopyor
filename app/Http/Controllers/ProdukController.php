@@ -61,7 +61,7 @@ class ProdukController extends Controller
             'nama_produk'  => 'required|max:255',
             'harga_produk'  => 'required|integer',
             'stock'  => 'required|integer',
-            'satuan_id'  => 'required|max:255',
+            // 'satuan_id'  => 'required|max:255',
             'jenis_barang_id'  => 'required|max:255',
             'barcode'  => 'integer|max:255',
             'foto_produk'  => 'mimes:jpeg,jpg,png,gif,svg|image|required'
