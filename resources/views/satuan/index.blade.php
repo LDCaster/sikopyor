@@ -48,8 +48,11 @@
                                                     data-bs-toggle="dropdown"><i
                                                         class="bx bx-dots-vertical-rounded"></i></button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="javascript:void(0);"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                    <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
+                                                        data-bs-target="#modalEdit" data-id="{{ $s->id }}">
+                                                        <i class="bx bx-edit-alt me-1"></i>
+                                                        Edit
+                                                    </a>
                                                     <form class="d-inline" style="display: inline"
                                                         action="{{ url('/satuan', $s->id) }}" method="POST">
                                                         @method('delete')
@@ -73,7 +76,8 @@
 
         </div>
     </div>
-    <!-- Modal -->
+
+    <!-- Modal Tambah -->
     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -105,11 +109,63 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCenterTitle">Edit Data Satuan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" id="editForm" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+
+                        <div class="row g-2">
+                            <div class="col mb-0">
+                                <label for="nama_satuan" class="form-label">Nama Satuan</label>
+                                <input type="text" id="nama_satuan_edit" name="nama_satuan" class="form-control"
+                                    placeholder="Nama Satuan" />
+                                @error('nama_satuan')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         @if ($errors->any())
             $(document).ready(function() {
                 $('#modalCenter').modal('show');
             });
         @endif
+
+        $(document).ready(function() {
+            $('.edit').click(function() {
+                const id = $(this).data('id'); // Menggunakan data-id
+                $.ajax({
+                    url: `/satuan/${id}/edit`,
+                    method: "get",
+                    success: function(data) {
+                        console.log(data);
+                        $('#nama_satuan_edit').val(data.nama_satuan);
+                        $('#editForm').attr('action', `/satuan/${id}`); // Perbaikan nama form
+                    }
+                });
+            });
+        });
     </script>
 @endsection

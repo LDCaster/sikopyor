@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role', function (Blueprint $table) {
+        Schema::create('penjualan_produk', function (Blueprint $table) {
             $table->id();
-           $table->string('nama_role');
+            $table->foreignId('penjualan_id')->constrained('penjualan');
+            $table->foreignId('produk_id')->constrained('produk');
+            $table->integer('jumlah');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role');
+        Schema::dropIfExists('penjualan_produk');
     }
 };

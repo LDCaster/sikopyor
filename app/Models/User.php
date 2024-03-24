@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'role_id',
+        'role',
         'nama',
         'no_telp',
         'jenis_kelamin',
@@ -47,16 +47,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function role()
-    {
-        return $this->belongsTo(RoleModel::class, 'role_id');
-    }
-    public function scopeKaryawan($query)
-    {
-        return $query->join('role', 'users.role_id', '=', 'role.id')
-            ->where('role.nama_role', 'karyawan')
-            ->select('users.*');
-    }
+
     public function stands()
     {
         return $this->hasMany(StandModel::class, 'user_id');

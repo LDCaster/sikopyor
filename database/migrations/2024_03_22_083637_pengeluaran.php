@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('barang_masuk', function (Blueprint $table) {
+        Schema::create('pengeluaran', function (Blueprint $table) {
             $table->id();
             $table->foreignId('stand_id')->constrained('stand');
-            $table->string('nama_barang');
-            $table->foreignId('supplier_id')->constrained('supplier');
+            $table->enum('jenis_pengeluaran', ['Belanja Barang', 'Gaji Karyawan']);
+            $table->date('tanggal_pengeluaran');
+            $table->string('deskripsi');
             $table->integer('jumlah');
-            $table->foreignId('satuan_id')->constrained('satuan');
-            // Add other attributes as needed
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('barang_masuk');
+        Schema::dropIfExists('pengeluaran');
     }
 };

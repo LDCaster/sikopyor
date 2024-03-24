@@ -39,8 +39,6 @@ class JenisBarangController extends Controller
         // menambahkan data
         $customAttributes = [
             'nama_jenis' => 'Nama Jenis'
-
-
         ];
 
         $request->validate([
@@ -67,7 +65,8 @@ class JenisBarangController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $jenis_barang = JenisBarangModel::findOrFail($id);
+        return response()->json($jenis_barang);
     }
 
     /**
@@ -75,8 +74,25 @@ class JenisBarangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validasi data yang dikirim dari form
+        $customAttributes = [
+            'nama_jenis' => 'Nama Jenis'
+        ];
+
+        $request->validate([
+            'nama_jenis' => 'required|max:255',
+        ], [], $customAttributes);
+
+        // Temukan jenis barang yang akan diupdate berdasarkan ID
+        $jenis_barang = JenisBarangModel::findOrFail($id);
+
+        // Update data jenis barang secara manual
+        $jenis_barang->nama_jenis = $request->nama_jenis;
+        $jenis_barang->save();
+
+        return redirect('/jenis-barang')->with('success', 'Data Berhasil Diupdate!');
     }
+
 
     /**
      * Remove the specified resource from storage.

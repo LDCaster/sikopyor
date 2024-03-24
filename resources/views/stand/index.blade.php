@@ -47,8 +47,11 @@
                                                     data-bs-toggle="dropdown"><i
                                                         class="bx bx-dots-vertical-rounded"></i></button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="javascript:void(0);"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                    <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
+                                                        data-bs-target="#modalEdit" data-id="{{ $s->id }}">
+                                                        <i class="bx bx-edit-alt me-1"></i>
+                                                        Edit
+                                                    </a>
                                                     <form class="d-inline" style="display: inline"
                                                         action="{{ url('/stand', $s->id) }}" method="POST">
                                                         @method('delete')
@@ -72,7 +75,8 @@
 
         </div>
     </div>
-    <!-- Modal -->
+
+    <!-- Modal Tambah-->
     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -129,11 +133,89 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCenterTitle">Edit Data Stand</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" id="editForm" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+
+                        <div class="row g-2">
+                            <div class="col mb-0">
+                                <label for="user_id_edit" class="form-label">Nama User</label>
+                                <select id="user_id_edit" name="user_id" class="form-select">
+                                    <option value="">--- Pilih User ---</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col mb-0">
+                                <label for="emailWithTitle" class="form-label">Nama Stand</label>
+                                <input type="text" id="nama_stand_edit" name="nama_stand" class="form-control"
+                                    placeholder="Nama Stand" />
+                                @error('nama_stand')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            <div class="col mb-0">
+                                <label for="emailWithTitle" class="form-label">Alamat </label>
+                                <input type="text" id="alamat_edit" name="alamat" class="form-control"
+                                    placeholder="Alamat" />
+                                @error('alamat')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         @if ($errors->any())
             $(document).ready(function() {
                 $('#modalCenter').modal('show');
             });
         @endif
+
+
+        $(document).ready(function() {
+            $('.edit').click(function() {
+                const id = $(this).data('id'); // Menggunakan data-id
+                $.ajax({
+                    url: `/stand/${id}/edit`,
+                    method: "get",
+                    success: function(data) {
+                        console.log(data);
+                        $('#user_id_edit').val(data.user_id);
+                        $('#nama_stand_edit').val(data.nama_stand);
+                        $('#alamat_edit').val(data.alamat);
+                        $('#editForm').attr('action', `/stand/${id}`); // Perbaikan nama form
+                    }
+                });
+            });
+        });
     </script>
 @endsection

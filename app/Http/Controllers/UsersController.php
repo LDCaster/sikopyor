@@ -14,14 +14,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $role = RoleModel::get();
-        $users = User::with(['role'])->get();
+        $users = User::get();
 
         return view('users.index', [
             'title' => 'Data users',
             'users' => $users,
-            'role' => $role
-
         ]);
     }
 
@@ -40,7 +37,7 @@ class UsersController extends Controller
     {
         // menambahkan data
         $customAttributes = [
-            'role_id' => 'Role',
+            'role' => 'Role',
             'name' => 'Nama',
             'no_telp' => 'Nomor Telepon',
             'jenis_kelamin' => 'Jenis Kelamin',
@@ -51,7 +48,7 @@ class UsersController extends Controller
         ];
 
         $request->validate([
-            'role_id' => 'required|integer',
+            'role' => 'required',
             'name' => 'max:255',
             'no_telp' => 'max:13',
             'jenis_kelamin' => 'max:255|required',
@@ -100,7 +97,7 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'role_id' => 'required|integer',
+            'role' => 'required',
             'name' => 'max:255',
             'no_telp' => 'max:13',
             'jenis_kelamin' => 'max:255|required',

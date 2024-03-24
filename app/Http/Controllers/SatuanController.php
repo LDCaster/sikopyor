@@ -63,7 +63,8 @@ class SatuanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $satuan = SatuanModel::findOrFail($id);
+        return response()->json($satuan);
     }
 
     /**
@@ -71,7 +72,24 @@ class SatuanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validasi data yang dikirim dari form
+        $customAttributes = [
+            'nama_satuan' => 'Nama Satuan'
+        ];
+
+        $request->validate([
+            'nama_satuan' => 'required|max:255',
+        ], [], $customAttributes);
+
+        // Temukan satuan yang akan diupdate berdasarkan ID
+        $satuan = SatuanModel::findOrFail($id);
+
+        // Update data satuan
+        $satuan->update([
+            'nama_satuan' => $request->nama_satuan,
+        ]);
+
+        return redirect('/satuan')->with('success', 'Data Berhasil Diupdate!');
     }
 
     /**

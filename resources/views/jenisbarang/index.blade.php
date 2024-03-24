@@ -48,8 +48,11 @@
                                                     data-bs-toggle="dropdown"><i
                                                         class="bx bx-dots-vertical-rounded"></i></button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="javascript:void(0);"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                    <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
+                                                        data-bs-target="#modalEdit" data-id="{{ $jb->id }}">
+                                                        <i class="bx bx-edit-alt me-1"></i>
+                                                        Edit
+                                                    </a>
                                                     <form class="d-inline" style="display: inline"
                                                         action="{{ url('/jenis-barang', $jb->id) }}" method="POST">
                                                         @method('delete')
@@ -74,7 +77,8 @@
 
         </div>
     </div>
-    <!-- Modal -->
+
+    <!-- Modal Tambah-->
     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -99,14 +103,68 @@
                         </button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCenterTitle">Edit Data Jenis Barang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" id="editForm">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+
+                        <div class="row g-2">
+                            <div class="col mb-0">
+                                <label for="nama_jenis_edit" class="form-label">Nama Jenis</label>
+                                <input type="text" id="nama_jenis_edit" name="nama_jenis" class="form-control"
+                                    placeholder="Nama Jenis" />
+                                @error('nama_jenis')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         @if ($errors->any())
             $(document).ready(function() {
                 $('#modalCenter').modal('show');
             });
         @endif
+
+        $(document).ready(function() {
+            $('.edit').click(function() {
+                const id = $(this).data('id'); // Menggunakan data-id
+                $.ajax({
+                    url: `/jenis-barang/${id}/edit`,
+                    method: "get",
+                    success: function(data) {
+                        console.log(data);
+                        $('#nama_jenis_edit').val(data.nama_jenis);
+                        $('#editForm').attr('action', `/jenis-barang/${id}`);
+                        $('#modalEdit').modal('show');
+                    }
+                });
+            });
+        });
     </script>
 @endsection

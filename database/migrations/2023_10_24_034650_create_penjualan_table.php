@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('stand_id')->constrained('stand');
             $table->string('kd_penjualan');
-            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('produk_id')->constrained('produk');
-            $table->string('jumlah_penjualan');
-            // Add other attributes as needed
+            $table->string('total_harga');
+            $table->string('tanggal_penjualan');
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ class StandController extends Controller
      */
     public function index()
     {
-        $users = User::karyawan()->get();
+        $users = User::get();
         $stand = StandModel::with(['users'])->get();
 
         return view('stand.index', [
@@ -46,7 +46,7 @@ class StandController extends Controller
 
         $request->validate([
             'user_id' => 'required|integer',
-            'name' => 'max:255',
+            'name_stand' => 'max:255',
             'alamat' => 'max:255',
         ], [], $customAttributes);
 
@@ -69,7 +69,8 @@ class StandController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $stand = StandModel::findOrFail($id);
+        return response()->json($stand);
     }
 
     /**
@@ -77,7 +78,30 @@ class StandController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validasi data yang dikirim dari form
+        $customAttributes = [
+            'user_id' => 'User',
+            'name_stand' => 'Nama Stand',
+            'alamat' => 'Alamat',
+        ];
+
+        $request->validate([
+            'user_id' => 'required|integer',
+            'name_stand' => 'max:255',
+            'alamat' => 'max:255',
+        ], [], $customAttributes);
+
+        // Temukan stand yang akan diupdate berdasarkan ID
+        $stand = StandModel::findOrFail($id);
+
+        // Update data stand
+        $stand->update([
+            'user_id' => $request->user_id,
+            'nama_stand' => $request->nama_stand,
+            'alamat' => $request->alamat,
+        ]);
+
+        return redirect('/stand')->with('success', 'Data Berhasil Diupdate!');
     }
 
     /**

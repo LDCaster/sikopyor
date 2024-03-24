@@ -46,7 +46,7 @@
                                     <tr>
                                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <span
                                                 class="fw-medium">{{ $loop->iteration }}</span></td>
-                                        <td>{{ $u->role->nama_role }}</td>
+                                        <td>{{ ucfirst($u->role) }}</td>
                                         <td>
                                             {{ $u->nama }}
                                         </td>
@@ -108,15 +108,13 @@
                         <div class="row">
                             <div class="col mb-3">
                                 <label for="nameWithTitle" class="form-label">Role</label>
-                                <select id="role_id" name="role_id" class="select2 form-select" data-allow-clear="true">
+                                <select id="role" name="role" class="select2 form-select" data-allow-clear="true">
                                     <option value="">--- Pilih Role ---</option>
-                                    @foreach ($role as $r)
-                                        <option value="{{ $r->id }}">
-                                            {{ $r->nama_role }}
-                                        </option>
-                                    @endforeach
+                                    <option value="admin">admin</option>
+                                    <option value="karyawan">karyawan</option>
+                                    <option value="user">user</option>
                                 </select>
-                                @error('role_id')
+                                @error('role')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -219,16 +217,15 @@
                         <div class="row">
                             <div class="col mb-3">
                                 <label for="nameWithTitle" class="form-label">Role</label>
-                                <select id="role_id_edit" name="role_id" class="select2 form-select"
+                                <select id="role_edit" name="role_edit" class="select2 form-select"
                                     data-allow-clear="true">
                                     <option value="">--- Pilih Role ---</option>
-                                    @foreach ($role as $r)
-                                        <option value="{{ $r->id }}">
-                                            {{ $r->nama_role }}
-                                        </option>
-                                    @endforeach
+                                    <option value="admin">admin</option>
+                                    <option value="karyawan">karyawan</option>
+                                    <option value="user">user</option>
                                 </select>
-                                @error('role_id')
+
+                                @error('role')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -342,7 +339,7 @@
                     method: "get",
                     success: function(data) {
                         console.log(data);
-                        $('#role_id_edit').val(data.role_id);
+                        $('#role_edit').val(data.role);
                         $('#nama_edit').val(data.nama);
                         $('#no_telp_edit').val(data.no_telp);
                         $('#jenis_kelamin_edit').val(data.jenis_kelamin);

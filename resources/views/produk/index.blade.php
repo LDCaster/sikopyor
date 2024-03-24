@@ -25,13 +25,14 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Barcode</th>
                                     <th>Nama Stand</th>
                                     <th>Nama Produk</th>
                                     <th>Harga Produk</th>
                                     <th>Stock</th>
-                                    <th>Nama Satuan</th>
+                                    {{-- <th>Nama Satuan</th>
                                     <th>Jenis Barang</th>
-                                    <th>Foto Produk</th>
+                                    <th>Foto Produk</th> --}}
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -40,13 +41,14 @@
                                     <tr>
                                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <span
                                                 class="fw-medium">{{ $loop->iteration }}</span></td>
+                                        <td>{{ $p->stand->barcode }}</td>
                                         <td>{{ $p->stand->nama_stand }}</td>
                                         <td>
                                             {{ $p->nama_produk }}
                                         </td>
                                         <td>{{ $p->harga_produk }}</td>
                                         <td>{{ $p->stock }}</td>
-                                        <td>
+                                        {{-- <td>
                                             @if ($p->satuan)
                                                 {{ $p->satuan->nama_satuan }}
                                             @else
@@ -65,13 +67,15 @@
                                                 <img style="max-width:100px; max-height:100px"
                                                     src="{{ url('/assets/img/produk') . '/' . $p->foto_produk }}">
                                             @endif
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                                     data-bs-toggle="dropdown"><i
                                                         class="bx bx-dots-vertical-rounded"></i></button>
                                                 <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i
+                                                            class="bx bx-edit-alt me-1"></i> Detail</a>
                                                     <a class="dropdown-item" href="javascript:void(0);"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit</a>
                                                     <form class="d-inline" style="display: inline"
@@ -92,13 +96,16 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
             </div>
             <!--/ Bordered Table -->
 
         </div>
     </div>
-    <!-- Modal -->
+
+
+    <!-- Modal Tambah-->
     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -214,6 +221,8 @@
             </div>
         </div>
     </div>
+
+
     <script>
         @if ($errors->any())
             $(document).ready(function() {

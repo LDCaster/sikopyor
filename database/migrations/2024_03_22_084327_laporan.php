@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('role_id')->after('id');
-            $table->foreign('role_id')->references('id')->on('role')->onDelete('restrict');
+        Schema::create('laporan', function (Blueprint $table) {
+            $table->id();
+            $table->date('tanggal');
+            $table->string('total_penjualan');
+            $table->string('total_pengeluaran');
+            $table->string('laba_bersih');
+            $table->timestamps();
         });
-
     }
 
     /**
@@ -23,8 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('laporan');
     }
 };
