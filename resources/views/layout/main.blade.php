@@ -44,6 +44,8 @@
 
 <body>
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+
+
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">

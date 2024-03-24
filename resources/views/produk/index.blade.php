@@ -25,7 +25,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Barcode</th>
+                                    {{-- <th>Barcode</th> --}}
                                     <th>Nama Stand</th>
                                     <th>Nama Produk</th>
                                     <th>Harga Produk</th>
@@ -41,7 +41,7 @@
                                     <tr>
                                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <span
                                                 class="fw-medium">{{ $loop->iteration }}</span></td>
-                                        <td>{{ $p->stand->barcode }}</td>
+                                        {{-- <td>{!! DNS1D::getBarcodeHTML($p->barcode, 'C39') !!} {{ $p->barcode }}</td> --}}
                                         <td>{{ $p->stand->nama_stand }}</td>
                                         <td>
                                             {{ $p->nama_produk }}
@@ -74,8 +74,11 @@
                                                     data-bs-toggle="dropdown"><i
                                                         class="bx bx-dots-vertical-rounded"></i></button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="javascript:void(0);"><i
-                                                            class="bx bx-edit-alt me-1"></i> Detail</a>
+                                                    <a href="#" class="dropdown-item detail" data-bs-toggle="modal"
+                                                        data-bs-target="#modalDetail" data-id="{{ $p->id }}">
+                                                        <i class="bx bx-detail me-1"></i>
+                                                        Detail
+                                                    </a>
                                                     <a class="dropdown-item" href="javascript:void(0);"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit</a>
                                                     <form class="d-inline" style="display: inline"
@@ -105,6 +108,76 @@
     </div>
 
 
+    <!-- Modal Detail Produk-->
+    <div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Detail Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Barcode</label>
+                        <div class="col-md-8">
+                            <img id="barcodeImage" style="max-width:200px; max-height:100px" />
+                            <span id="barcode_data_detail"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Foto Produk</label>
+                        <div class="col-md-8">
+                            <img style="max-width:200px; max-height:200px" id="detailFotoProduk">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Nama Stand</label>
+                        <div class="col-md-8">
+                            <input style="border: none;" class="form-control" type="text" id="detailNamaStand"
+                                readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Nama Produk</label>
+                        <div class="col-md-8">
+                            <input style="border: none;" class="form-control" type="text" id="detailNamaProduk"
+                                readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Jenis Barang</label>
+                        <div class="col-md-8">
+                            <input style="border: none;" class="form-control" type="text" id="detailJenisBarang"
+                                readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Satuan</label>
+                        <div class="col-md-8">
+                            <input style="border: none;" class="form-control" type="text" id="detailSatuan" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Harga Produk</label>
+                        <div class="col-md-8">
+                            <input style="border: none;" class="form-control" type="text" id="detailHargaProduk"
+                                readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="html5-text-input" class="col-md-4 col-form-label">Jumlah Stock</label>
+                        <div class="col-md-8">
+                            <input style="border: none;" class="form-control" type="text" id="detailStock"
+                                readonly />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Tambah-->
     <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -119,7 +192,8 @@
                         <div class="row">
                             <div class="col mb-3">
                                 <label for="nameWithTitle" class="form-label">Stand</label>
-                                <select id="stand_id" name="stand_id" class="select2 form-select" data-allow-clear="true">
+                                <select id="stand_id" name="stand_id" class="select2 form-select"
+                                    data-allow-clear="true">
                                     <option value="">--- Pilih Stand ---</option>
                                     @foreach ($namastand as $ns)
                                         <option value="{{ $ns->id }}">
@@ -192,14 +266,14 @@
                                 @enderror
 
                             </div>
-                            <div class="col mb-0">
+                            {{-- <div class="col mb-0">
                                 <label for="dobWithTitle" class="form-label">Barcode</label>
-                                <input type="text" id="barcode" name="barcode"class="form-control"
-                                    placeholder="barcode" />
+                                <input type="text" id="barcode" name="barcode" class="form-control"
+                                    placeholder="Barcode" readonly />
                                 @error('barcode')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="row g-2">
                             <div class="col mb-0">
@@ -229,5 +303,37 @@
                 $('#modalCenter').modal('show');
             });
         @endif
+
+        $(document).ready(function() {
+            $('.detail').click(function() {
+                var id = $(this).data('id');
+                $.ajax({
+                    url: '/produk/' + id,
+                    method: 'GET',
+                    success: function(data) {
+                        console.log(data);
+                        $('#barcodeImage').attr('src', data.barcode);
+                        $('#barcode_data_detail').text(data
+                            .barcode_data); // Menampilkan data barcode di bawah gambar
+                        $('#detailNamaStand').val(data.stand.nama_stand);
+                        $('#detailNamaProduk').val(data.nama_produk);
+                        $('#detailJenisBarang').val(data.jenis_barang.nama_jenis);
+                        $('#detailSatuan').val(data.satuan.nama_satuan);
+                        $('#detailHargaProduk').val(data.harga_produk);
+                        $('#detailStock').val(data.stock);
+                        // Tampilkan foto produk
+                        if (data.foto_produk) {
+                            $('#detailFotoProduk').attr('src',
+                                '{{ url('/assets/img/produk') }}/' + data.foto_produk);
+                        } else {
+                            // Jika tidak ada foto, tampilkan placeholder
+                            $('#detailFotoProduk').attr('src',
+                                '{{ url('/assets/img/placeholder.jpg') }}');
+                        }
+                        $('#modalDetail').modal('show');
+                    }
+                });
+            });
+        });
     </script>
 @endsection
