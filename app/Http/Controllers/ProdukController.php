@@ -133,11 +133,7 @@ class ProdukController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(string $id)
-    // {
-    //     $produk = ProdukModel::with(['stand', 'satuan', 'jenis_barang'])->findOrFail($id);
-    //     return response()->json($produk);
-    // }
+
     public function show(string $id)
     {
         $produk = ProdukModel::with(['stand', 'satuan', 'jenis_barang'])->findOrFail($id);
@@ -159,7 +155,8 @@ class ProdukController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $produk = ProdukModel::findOrFail($id);
+        return response()->json($produk);
     }
 
     /**
@@ -167,7 +164,41 @@ class ProdukController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $customAttributes = [
+            'stand_id' => 'Nama Stand',
+            'nama_produk' => 'Nama Produk',
+            'harga_produk' => 'Harga Produk',
+            'stock' => 'Stock',
+            'satuan_id' => 'Nama Satuan',
+            'jenis_barang_id' => 'Jenis Barang',
+            'foto_produk' => 'Foto Produk'
+        ];
+
+        $request->validate([
+            'stand_id' => 'required|max:255',
+            'nama_produk'  => 'required|max:255',
+            'harga_produk'  => 'required|integer',
+            'stock'  => 'required|integer',
+            'satuan_id'  => 'required|max:255',
+            'jenis_barang_id'  => 'required|max:255',
+            'foto_produk'  => 'sometimes|mimes:jpeg,jpg,png,gif,svg|image'
+        ], [], $customAttributes);
+
+        $input = $request->all();
+
+        if ($image = $request->file('foto_produk')) {
+            $destinationPath = 'assets/img/produk';
+            $profileImage = date('YmdHis') . "." . $image->extension();
+            $image->move($destinationPath, $profileImage);
+            $input['foto_produk'] = "$profileImage";
+        } else {
+            unset($input['foto_produk']);
+        }
+
+        $produk = ProdukModel::findOrFail($id);
+        $produk->update($input);
+
+        return redirect('/produk')->with('success', 'Data Berhasil Diupdate!');
     }
 
     /**

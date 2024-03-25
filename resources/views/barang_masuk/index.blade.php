@@ -41,12 +41,33 @@
                                     <tr>
                                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <span
                                                 class="fw-medium">{{ $loop->iteration }}</span></td>
+                                        {{-- <td>{!! DNS1D::getBarcodeHTML($p->barcode, 'C39') !!} {{ $p->barcode }}</td> --}}
                                         <td>{{ $p->stand->nama_stand }}</td>
                                         <td>
                                             {{ $p->nama_produk }}
                                         </td>
                                         <td>{{ $p->harga_produk }}</td>
                                         <td>{{ $p->stock }}</td>
+                                        {{-- <td>
+                                            @if ($p->satuan)
+                                                {{ $p->satuan->nama_satuan }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($p->jenis_barang)
+                                                {{ $p->jenis_barang->nama_jenis }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($p->foto_produk)
+                                                <img style="max-width:100px; max-height:100px"
+                                                    src="{{ url('/assets/img/produk') . '/' . $p->foto_produk }}">
+                                            @endif
+                                        </td> --}}
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -58,10 +79,8 @@
                                                         <i class="bx bx-detail me-1"></i>
                                                         Detail
                                                     </a>
-                                                    <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
-                                                        data-bs-target="#modalEdit" data-id="{{ $p->id }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> Edit
-                                                    </a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"><i
+                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
                                                     <form class="d-inline" style="display: inline"
                                                         action="{{ url('/produk', $p->id) }}" method="POST">
                                                         @method('delete')
@@ -252,6 +271,14 @@
                                 @enderror
 
                             </div>
+                            {{-- <div class="col mb-0">
+                                <label for="dobWithTitle" class="form-label">Barcode</label>
+                                <input type="text" id="barcode" name="barcode" class="form-control"
+                                    placeholder="Barcode" readonly />
+                                @error('barcode')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div> --}}
                         </div>
                         <div class="row g-2">
                             <div class="col mb-0">
@@ -274,119 +301,6 @@
         </div>
     </div>
 
-    <!-- Modal Edit-->
-    <div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditTitle">Edit Data Produk</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="formEdit" method="post" enctype="multipart/form-data">
-                    @method('PUT')
-                    @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col mb-3">
-                                <label for="nameWithTitle" class="form-label">Stand</label>
-                                <select id="edit_stand_id" name="stand_id" class="select2 form-select"
-                                    data-allow-clear="true">
-                                    <option value="">--- Pilih Stand ---</option>
-                                    @foreach ($namastand as $ns)
-                                        <option value="{{ $ns->id }}">
-                                            {{ $ns->nama_stand }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('stand_id')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col mb-0">
-                                <label for="emailWithTitle" class="form-label">Nama Produk</label>
-                                <input type="text" id="edit_nama_produk" name="nama_produk" class="form-control"
-                                    placeholder="Nama Produk" />
-                                @error('nama_produk')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col mb-0">
-                                <label for="dobWithTitle" class="form-label">Harga Produk</label>
-                                <input type="text" id="edit_harga_produk" name="harga_produk" class="form-control"
-                                    placeholder="Harga Produk" />
-                                @error('harga_produk')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col mb-0">
-                                <label for="emailWithTitle" class="form-label">Stock</label>
-                                <input type="text" id="edit_stock" name="stock" class="form-control"
-                                    placeholder="Stock" />
-                                @error('stock')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col mb-0">
-                                <label for="dobWithTitle" class="form-label">Satuan</label>
-                                <select id="edit_satuan_id" name="satuan_id" class="select2 form-select"
-                                    data-allow-clear="true">
-                                    <option value="">--- Pilih Satuan ---</option>
-                                    @foreach ($namasatuan as $ns)
-                                        <option value="{{ $ns->id }}">
-                                            {{ $ns->nama_satuan }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('jenis_barang_id')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col mb-0">
-                                <label for="emailWithTitle" class="form-label">Jenis</label>
-                                <select id="edit_jenis_barang_id" name="jenis_barang_id" class="select2 form-select"
-                                    data-allow-clear="true">
-                                    <option value="">--- Pilih Jenis ---</option>
-                                    @foreach ($namajenis as $nj)
-                                        <option value="{{ $nj->id }}">
-                                            {{ $nj->nama_jenis }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('jenis_barang_id')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-
-                            </div>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col mb-0">
-                                <label for="foto_produk" class="form-label">Foto</label>
-                                <input class="form-control" type="file" id="edit_foto_produk" name="foto_produk">
-                                @error('foto_produk')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col mb-0">
-                                <label class="form-label">Preview</label>
-                                <img id="edit_foto_produk_preview" src="" alt="Foto Produk" class="img-fluid">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
 
     <script>
         @if ($errors->any())
@@ -394,61 +308,5 @@
                 $('#modalCenter').modal('show');
             });
         @endif
-
-        $(document).ready(function() {
-            $('.detail').click(function() {
-                var id = $(this).data('id');
-                $.ajax({
-                    url: '/produk/' + id,
-                    method: 'GET',
-                    success: function(data) {
-                        console.log(data);
-                        $('#barcodeImage').attr('src', data.barcode);
-                        $('#barcode_data_detail').text(data
-                            .barcode_data); // Menampilkan data barcode di bawah gambar
-                        $('#detailNamaStand').val(data.stand.nama_stand);
-                        $('#detailNamaProduk').val(data.nama_produk);
-                        $('#detailJenisBarang').val(data.jenis_barang.nama_jenis);
-                        $('#detailSatuan').val(data.satuan.nama_satuan);
-                        $('#detailHargaProduk').val(data.harga_produk);
-                        $('#detailStock').val(data.stock);
-                        // Tampilkan foto produk
-                        if (data.foto_produk) {
-                            $('#detailFotoProduk').attr('src',
-                                '{{ url('/assets/img/produk') }}/' + data.foto_produk);
-                        } else {
-                            // Jika tidak ada foto, tampilkan placeholder
-                            $('#detailFotoProduk').attr('src',
-                                '{{ url('/assets/img/placeholder.jpg') }}');
-                        }
-                        $('#modalDetail').modal('show');
-                    }
-                });
-            });
-        });
-
-        // FUNGSI EDIT 
-        $('#modalEdit').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('id');
-
-            // Request data produk yang akan diedit
-            $.ajax({
-                url: '/produk/' + id + '/edit',
-                method: 'GET',
-                success: function(data) {
-                    // Isi form edit dengan data produk
-                    $('#formEdit').attr('action', '/produk/' + id);
-                    $('#edit_stand_id').val(data.stand_id).trigger('change');
-                    $('#edit_nama_produk').val(data.nama_produk);
-                    $('#edit_harga_produk').val(data.harga_produk);
-                    $('#edit_stock').val(data.stock);
-                    $('#edit_satuan_id').val(data.satuan_id).trigger('change');
-                    $('#edit_jenis_barang_id').val(data.jenis_barang_id).trigger('change');
-                    $('#edit_foto_produk_preview').attr('src', '/assets/img/produk/' + data
-                        .foto_produk);
-                }
-            });
-        });
     </script>
 @endsection
