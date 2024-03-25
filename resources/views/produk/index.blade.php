@@ -121,10 +121,14 @@
                         <label for="html5-text-input" class="col-md-4 col-form-label">Barcode</label>
                         <div class="col-md-8">
                             <img id="barcodeImage" style="max-width:200px; max-height:100px" />
-                            <span id="barcode_data_detail"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" style="text-align: center; margin-top: -10px; margin-left: 35px;">
+                                <span id="barcode_data_detail" style="font-size: 12px;"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-2">
                         <label for="html5-text-input" class="col-md-4 col-form-label">Foto Produk</label>
                         <div class="col-md-8">
                             <img style="max-width:200px; max-height:200px" id="detailFotoProduk">
@@ -154,7 +158,8 @@
                     <div class="row">
                         <label for="html5-text-input" class="col-md-4 col-form-label">Satuan</label>
                         <div class="col-md-8">
-                            <input style="border: none;" class="form-control" type="text" id="detailSatuan" readonly />
+                            <input style="border: none;" class="form-control" type="text" id="detailSatuan"
+                                readonly />
                         </div>
                     </div>
                     <div class="row">
