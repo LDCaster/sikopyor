@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('produk_id')->constrained('produk');
             $table->integer('jumlah');
-            $table->date('tanggal_masuk');
+            // $table->date('tanggal_masuk');
             $table->timestamps();
         });
     }

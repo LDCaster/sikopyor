@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BarangMasukController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StandController;
 use App\Http\Controllers\SupplierController;
@@ -29,4 +30,5 @@ Route::resource('supplier', SupplierController::class);
 Route::resource('satuan', SatuanController::class);
 Route::resource('jenis-barang', JenisBarangController::class);
 Route::resource('produk', ProdukController::class);
+Route::resource('barang-masuk', BarangMasukController::class);
 Route::resource('users', usersController::class);

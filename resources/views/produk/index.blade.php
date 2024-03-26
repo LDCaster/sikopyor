@@ -410,7 +410,8 @@
                         $('#detailNamaProduk').val(data.nama_produk);
                         $('#detailJenisBarang').val(data.jenis_barang.nama_jenis);
                         $('#detailSatuan').val(data.satuan.nama_satuan);
-                        $('#detailHargaProduk').val(data.harga_produk);
+                        $('#detailHargaProduk').val('Rp ' + new Intl.NumberFormat('id-ID')
+                            .format(data.harga_produk));
                         $('#detailStock').val(data.stock);
                         // Tampilkan foto produk
                         if (data.foto_produk) {

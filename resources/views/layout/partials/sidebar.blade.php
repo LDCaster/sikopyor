@@ -70,7 +70,7 @@
             <ul class="menu-sub">
 
                 <li class="menu-item ">
-                    <a href="/produk" class="menu-link">
+                    <a href="/barang-masuk" class="menu-link">
                         <div data-i18n="Stockin">Stock in/Barang Masuk</div>
                     </a>
                 </li>
