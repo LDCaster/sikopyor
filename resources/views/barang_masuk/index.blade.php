@@ -93,6 +93,13 @@
                             </button>
                         </div>
                     @endif
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            </button>
+                        </div>
+                    @endif
                     <div class="table-responsive text-nowrap">
                         <table class="table table-bordered">
                             <thead>
@@ -130,7 +137,7 @@
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
                                                     <form class="d-inline" style="display: inline"
-                                                        action="{{ url('/produk', $bm->id) }}" method="POST">
+                                                        action="{{ url('/barang-masuk', $bm->id) }}" method="POST">
                                                         @method('delete')
                                                         @csrf
                                                         <button class="dropdown-item" type="submit"
