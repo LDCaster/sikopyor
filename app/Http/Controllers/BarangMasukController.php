@@ -54,6 +54,7 @@ class BarangMasukController extends Controller
         $barang_masuk = new BarangMasukModel;
         $barang_masuk->produk_id = $request->produk_id;
         $barang_masuk->jumlah = $request->jumlah;
+        $barang_masuk->created_at = Carbon::now()->setTimezone('Asia/Singapore');
         $barang_masuk->save();
 
         // Update stock produk
@@ -99,9 +100,10 @@ class BarangMasukController extends Controller
         $created_at_sg = Carbon::parse($barang_masuk->created_at)->setTimezone('Asia/Singapore');
 
         // Cek apakah data sudah lebih dari 1 hari dibuat (dalam zona waktu Singapura)
-        if ($created_at_sg->diffInDays(now()) > 1) {
-            return redirect('/barang-masuk')->with('error', 'Data barang masuk tidak dapat dihapus karena sudah lebih dari 1 hari dibuat.');
+        if ($created_at_sg->diffInDays(now()) >= 1) {
+            return redirect('/barang-masuk')->with('error', 'Data barang masuk tidak dapat dihapus karena sudah lebih dari 1 hari ditambah.');
         }
+
 
         // Kurangi stock produk
         $produk = ProdukModel::find($barang_masuk->produk_id);
