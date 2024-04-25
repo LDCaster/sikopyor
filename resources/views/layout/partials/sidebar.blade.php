@@ -130,12 +130,12 @@
             </a>
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="forms-basic-inputs.html" class="menu-link">
+                    <a href="/kasir" class="menu-link">
                         <div data-i18n="Kasir">Kasir</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="forms-input-groups.html" class="menu-link">
+                    <a href="/daftar-penjualan" class="menu-link">
                         <div data-i18n="Daftar Penjualan">Daftar Penjualan</div>
                     </a>
                 </li>

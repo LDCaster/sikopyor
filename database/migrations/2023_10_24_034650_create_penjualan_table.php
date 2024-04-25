@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('stand_id')->constrained('stand');
             $table->string('kd_penjualan');
-            $table->foreignId('produk_id')->constrained('produk');
+            $table->string('kasir');
+            $table->string('customer');
             $table->string('total_harga');
             $table->string('tanggal_penjualan');
             $table->timestamps();

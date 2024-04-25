@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('satuan_id')->nullable()->constrained('satuan');
             $table->foreignId('jenis_barang_id')->nullable()->constrained('jenis_barang');
             $table->string('barcode');
+            $table->string('barcode_data');
             $table->string('foto_produk');
             // Add other attributes as needed
             $table->timestamps();

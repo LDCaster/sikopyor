@@ -8,6 +8,7 @@ use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\UsersController;
 
 
@@ -31,4 +32,5 @@ Route::resource('satuan', SatuanController::class);
 Route::resource('jenis-barang', JenisBarangController::class);
 Route::resource('produk', ProdukController::class);
 Route::resource('barang-masuk', BarangMasukController::class);
+Route::resource('kasir', PenjualanController::class);
 Route::resource('users', usersController::class);

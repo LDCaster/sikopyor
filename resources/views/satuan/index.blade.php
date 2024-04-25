@@ -153,6 +153,7 @@
             });
         @endif
 
+        // Tampil Edit
         $(document).ready(function() {
             $('.edit').click(function() {
                 const id = $(this).data('id'); // Menggunakan data-id

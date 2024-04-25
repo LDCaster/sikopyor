@@ -47,7 +47,7 @@ class SupplierController extends Controller
         ];
 
         $request->validate([
-            'nama_toko' => 'max:255|required',
+            'nama_toko' => 'max:255|required|unique:supplier,nama_toko',
             'alamat' => 'max:255|required',
             'no_telp' => 'required|integer'
         ], [], $customAttributes);
@@ -55,7 +55,7 @@ class SupplierController extends Controller
         $input = $request->all();
 
         $supplier = SupplierModel::create($input);
-        return redirect('/supplier')->with('success', 'Data Berhasil Ditambahkan!');
+        return redirect('/supplier')->with('success', 'Data Berhasil Ditambahkan!');
     }
 
     /**
@@ -71,7 +71,8 @@ class SupplierController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $supplier = SupplierModel::findOrFail($id);
+        return response()->json($supplier);
     }
 
     /**
@@ -79,7 +80,23 @@ class SupplierController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $customAttributes = [
+            'nama_toko' => 'Nama Toko',
+            'alamat' => 'Alamat',
+            'no_telp' => 'No Telp',
+
+        ];
+
+        $request->validate([
+            'nama_toko' => 'max:255|required|unique:supplier,nama_toko,' . $id,
+            'alamat' => 'max:255|required',
+            'no_telp' => 'required|integer'
+        ], [], $customAttributes);
+
+        $supplier = SupplierModel::findOrFail($id);
+        $supplier->update($request->all());
+
+        return redirect('/supplier')->with('success', 'Data Berhasil Diupdate!');
     }
 
     /**
