@@ -63,9 +63,17 @@ class UsersController extends Controller
 
         if ($image = $request->file('img')) {
             $destinationPath = 'assets/img/profile';
-            $profileImage = date('YmdHis') . "." . $image->extension();
+            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $profileImage);
-            $input['img'] = "$profileImage";
+
+            // Resize image to 512x512
+            $img = imagecreatefromstring(file_get_contents(public_path($destinationPath . '/' . $profileImage)));
+            $newImg = imagescale($img, 512, 512);
+            imagejpeg($newImg, public_path($destinationPath . '/' . $profileImage));
+            imagedestroy($img);
+            imagedestroy($newImg);
+
+            $input['img'] = $profileImage;
         } else {
             unset($input['img']);
         }
@@ -97,7 +105,7 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'role' => 'required',
+            // 'role' => 'required',
             'name' => 'max:255',
             'no_telp' => 'max:13',
             'jenis_kelamin' => 'max:255|required',
@@ -115,8 +123,17 @@ class UsersController extends Controller
             $destinationPath = 'assets/img/profile';
             $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $profileImage);
+
+            // Resize image to 512x512
+            $img = imagecreatefromstring(file_get_contents(public_path($destinationPath . '/' . $profileImage)));
+            $newImg = imagescale($img, 512, 512);
+            imagejpeg($newImg, public_path($destinationPath . '/' . $profileImage));
+            imagedestroy($img);
+            imagedestroy($newImg);
+
             $input['img'] = $profileImage;
         }
+
         // Update password jika diminta
         if ($request->filled('password')) {
             $input['password'] = bcrypt($request->input('password'));

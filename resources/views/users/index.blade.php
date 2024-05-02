@@ -327,9 +327,26 @@
     <script>
         @if ($errors->any())
             $(document).ready(function() {
-                $('#modalCenter').modal('show');
+                $('#modalEdit').modal('show');
             });
         @endif
+
+        $(document).ready(function() {
+            // Event listener untuk input file img_edit
+            $('#img_edit').on('change', function() {
+                // Mengambil file yang dipilih
+                const file = this.files[0];
+                if (file) {
+                    // Membuat URL sementara untuk file yang dipilih
+                    const imgUrl = URL.createObjectURL(file);
+                    // Mengubah src pada elemen gambar dengan id img-preview
+                    $('#img-preview').attr('src', imgUrl);
+                } else {
+                    // Jika tidak ada file yang dipilih, tampilkan placeholder
+                    $('#img-preview').attr('src', '{{ url('/assets/img/placeholder.png') }}');
+                }
+            });
+        });
 
         $(document).ready(function() {
             $('.edit').click(function() {
