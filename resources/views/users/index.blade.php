@@ -164,7 +164,10 @@
                         <div class="row g-2">
                             <div class="col mb-0">
                                 <label for="img" class="form-label">Foto</label>
-                                <input class="form-control" type="file" id="img" name="img">
+                                <input class="form-control" type="file" id="img" name="img"
+                                    onchange="previewImage(this)">
+                                <img id="img-preview" style="max-width: 200px; max-height: 200px;"
+                                    src="{{ url('/assets/img/placeholder.png') }}" alt="Preview">
                                 @error('img')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -330,6 +333,18 @@
                 $('#modalEdit').modal('show');
             });
         @endif
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#img-preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $('#img-preview').attr('src', '{{ url('/assets/img/placeholder.png') }}');
+            }
+        }
 
         $(document).ready(function() {
             // Event listener untuk input file img_edit
