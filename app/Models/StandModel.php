@@ -10,7 +10,8 @@ class StandModel extends Model
     use HasFactory;
     protected $table = 'stand';
 
-    protected $guarded = [];
+    // protected $guarded = [];
+    protected $fillable = ['user_id', 'nama_stand', 'alamat'];
 
     public function users()
     {

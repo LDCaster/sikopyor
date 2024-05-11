@@ -60,12 +60,13 @@
                                     <div class="col mb-0">
                                         <label for="dobWithTitle" class="form-label">Jumlah</label>
                                         <input type="text" id="jumlah" name="jumlah" class="form-control"
-                                            placeholder="Jumlah" />
+                                            placeholder="Jumlah" pattern="[0-9]+" title="Harus berupa angka" required />
                                         @error('jumlah')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
+
                             </div>
                             <div class="modal-footer mt-3">
                                 <button type="submit" class="btn btn-primary">Save changes</button>
@@ -127,7 +128,7 @@
                                                     data-bs-toggle="dropdown"><i
                                                         class="bx bx-dots-vertical-rounded"></i></button>
                                                 <div class="dropdown-menu">
-                                                    <a href="#" class="dropdown-item detail" data-bs-toggle="modal"
+                                                    {{-- <a href="#" class="dropdown-item detail" data-bs-toggle="modal"
                                                         data-bs-target="#modalDetail" data-id="{{ $bm->id }}">
                                                         <i class="bx bx-detail me-1"></i>
                                                         Detail
@@ -135,7 +136,7 @@
                                                     <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
                                                         data-bs-target="#modalEdit" data-id="{{ $bm->id }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
-                                                    </a>
+                                                    </a> --}}
                                                     <form class="d-inline" style="display: inline"
                                                         action="{{ url('/barang-masuk', $bm->id) }}" method="POST">
                                                         @method('delete')

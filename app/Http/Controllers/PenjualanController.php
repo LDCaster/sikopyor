@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PenjualanModel;
+use App\Models\ProdukModel;
 use Illuminate\Http\Request;
 
 class PenjualanController extends Controller
@@ -12,15 +13,29 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        $supplier = PenjualanModel::get();
+        $penjualan = PenjualanModel::latest('kd_penjualan')->first();
 
+        $lastKode = $penjualan ? $penjualan->kd_penjualan : 'IN0000';
+        $newKode = 'IN' . str_pad((int)substr($lastKode, 2) + 1, 6, '0', STR_PAD_LEFT);
+
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $produk = ProdukModel::with('jenis_barang')->get();
+        } else {
+            $userStands = $user->stands;
+            $userStandIds = $userStands->pluck('id');
+            $produk = ProdukModel::with('jenis_barang')->whereIn('stand_id', $userStandIds)->get();
+        }
 
         return view('penjualan.index', [
             'title' => 'Kasir',
-            'penjualan' => $supplier
-
+            'penjualan' => $penjualan,
+            'produk' => $produk,
+            'newKode' => $newKode, // Mengirim nomor invoice baru ke view
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

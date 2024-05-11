@@ -11,8 +11,12 @@
             <div class="card">
                 <h5 class="card-header">Data Produk</h5>
                 <div class="card-body">
-                    <a href="" class="btn rounded-pill btn-primary mb-3" data-bs-toggle="modal"
-                        data-bs-target="#modalCenter">Tambah</a>
+
+                    @if (auth()->user()->role === 'admin')
+                        <a href="" class="btn rounded-pill btn-primary mb-3" data-bs-toggle="modal"
+                            data-bs-target="#modalCenter">Tambah</a>
+                    @endif
+
                     @if (session()->has('success'))
                         <div class="alert alert-success alert-dismissible" role="alert">
                             {{ session('success') }}
@@ -58,19 +62,20 @@
                                                         <i class="bx bx-detail me-1"></i>
                                                         Detail
                                                     </a>
-                                                    <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
-                                                        data-bs-target="#modalEdit" data-id="{{ $p->id }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> Edit
-                                                    </a>
-                                                    <form class="d-inline" style="display: inline"
-                                                        action="{{ url('/produk', $p->id) }}" method="POST">
-                                                        @method('delete')
-                                                        @csrf
-                                                        <button class="dropdown-item" type="submit"
-                                                            onclick="return confirm('Apakah anda yakin untuk hapus data Users?')">
-                                                            <i class="bx bx-trash me-1"></i> Delete</button>
-                                                    </form>>
-
+                                                    @if (auth()->user()->role === 'admin')
+                                                        <a href="#" class="dropdown-item edit" data-bs-toggle="modal"
+                                                            data-bs-target="#modalEdit" data-id="{{ $p->id }}">
+                                                            <i class="bx bx-edit-alt me-1"></i> Edit
+                                                        </a>
+                                                        <form class="d-inline" style="display: inline"
+                                                            action="{{ url('/produk', $p->id) }}" method="POST">
+                                                            @method('delete')
+                                                            @csrf
+                                                            <button class="dropdown-item" type="submit"
+                                                                onclick="return confirm('Apakah anda yakin untuk hapus data Users?')">
+                                                                <i class="bx bx-trash me-1"></i> Delete</button>
+                                                        </form>>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </td>

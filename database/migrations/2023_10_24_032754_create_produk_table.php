@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('stand_id')->constrained('stand');
             $table->string('nama_produk');
-            $table->string('harga_produk');
+            $table->string('harga_produk')->nullable();
             $table->integer('stock');
             $table->foreignId('satuan_id')->nullable()->constrained('satuan');
             $table->foreignId('jenis_barang_id')->nullable()->constrained('jenis_barang');
-            $table->string('barcode');
-            $table->string('barcode_data');
-            $table->string('foto_produk');
+            $table->string('barcode')->nullable();
+            $table->string('barcode_data')->nullable();
+            $table->string('foto_produk')->nullable();
             // Add other attributes as needed
             $table->timestamps();
         });

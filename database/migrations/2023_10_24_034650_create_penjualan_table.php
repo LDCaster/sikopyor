@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('stand_id')->constrained('stand');
+            $table->string('stand')->nullable();
             $table->string('kd_penjualan');
-            $table->string('kasir');
-            $table->string('customer');
+            $table->string('kasir')->nullable();
+            $table->string('customer')->nullable();
             $table->string('total_harga');
-            $table->string('tanggal_penjualan');
+            $table->string('tanggal_penjualan')->nullable();
+            $table->string('cash')->nullable();
+            $table->string('change')->nullable();
+            $table->string('discount')->nullable();
             $table->timestamps();
         });
     }

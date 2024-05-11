@@ -79,42 +79,49 @@
                         <div data-i18n="Produk">Produk</div>
                     </a>
                 </li>
-                <li class="menu-item ">
-                    <a href="/satuan" class="menu-link">
-                        <div data-i18n="Satuan">Satuan</div>
-                    </a>
-                </li>
-                <li class="menu-item ">
-                    <a href="/jenis-barang" class="menu-link">
-                        <div data-i18n="JenisBarang">Jenis Barang</div>
-                    </a>
-                </li>
+
+                @if (auth()->user()->role === 'admin')
+                    <li class="menu-item ">
+                        <a href="/satuan" class="menu-link">
+                            <div data-i18n="Satuan">Satuan</div>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a href="/jenis-barang" class="menu-link">
+                            <div data-i18n="JenisBarang">Jenis Barang</div>
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </li>
 
         <!-- Users -->
-        <li class="menu-item">
-            <a href="/users" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Users</div>
-            </a>
-        </li>
-        <!-- Stand -->
-        <li class="menu-item">
-            <a href="/stand" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Stand/Cabang</div>
-            </a>
-        </li>
-        <!-- Supplier -->
-        <li class="menu-item">
-            <a href="/supplier" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Supplier</div>
-            </a>
-        </li>
+        @if (auth()->user()->role === 'admin')
+            <li class="menu-item">
+                <a href="/users" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Users</div>
+                </a>
+            </li>
+        @endif
 
+        @if (auth()->user()->role === 'admin')
+            <!-- Stand -->
+            <li class="menu-item">
+                <a href="/stand" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Stand/Cabang</div>
+                </a>
+            </li>
+            <!-- Supplier -->
+            <li class="menu-item">
+                <a href="/supplier" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Supplier</div>
+                </a>
+            </li>
+        @endif
 
 
 

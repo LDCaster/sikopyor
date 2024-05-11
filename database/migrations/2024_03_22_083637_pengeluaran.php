@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('deskripsi');
             $table->integer('jumlah');
             $table->timestamps();
+            $table->foreignId('supplier_id')->nullable()->constrained('supplier');
         });
     }
 

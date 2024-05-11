@@ -11,4 +11,9 @@ class SupplierModel extends Model
     protected $table = 'supplier';
 
     protected $guarded = [];
+
+    public function jenis_barang()
+    {
+        return $this->belongsTo(JenisBarangModel::class, 'jenis_barang_id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JenisBarangModel;
 use Illuminate\Http\Request;
 use App\Models\SupplierModel;
 use App\Models\User;
@@ -15,12 +16,14 @@ class SupplierController extends Controller
     public function index()
     {
 
-        $supplier = SupplierModel::get();
+        $supplier = SupplierModel::with(['jenis_barang'])->get();
+        $jenisbarang = JenisBarangModel::get();
 
 
         return view('supplier.index', [
             'title' => 'Data Supplier',
-            'supplier' => $supplier
+            'supplier' => $supplier,
+            'jenisbarang' => $jenisbarang
 
         ]);
     }
@@ -43,13 +46,14 @@ class SupplierController extends Controller
             'nama_toko' => 'Nama Toko',
             'alamat' => 'Alamat',
             'no_telp' => 'No Telp',
-
+            'jenis_barang_id' => 'Jenis Barang',
         ];
 
         $request->validate([
             'nama_toko' => 'max:255|required|unique:supplier,nama_toko',
             'alamat' => 'max:255|required',
-            'no_telp' => 'required|integer'
+            'no_telp' => 'required|integer',
+            'jenis_barang_id' => 'required|exists:jenis_barang,id',
         ], [], $customAttributes);
 
         $input = $request->all();
@@ -57,6 +61,7 @@ class SupplierController extends Controller
         $supplier = SupplierModel::create($input);
         return redirect('/supplier')->with('success', 'Data Berhasil Ditambahkan!');
     }
+
 
     /**
      * Display the specified resource.
@@ -84,13 +89,14 @@ class SupplierController extends Controller
             'nama_toko' => 'Nama Toko',
             'alamat' => 'Alamat',
             'no_telp' => 'No Telp',
-
+            'jenis_barang_id' => 'Jenis Barang',
         ];
 
         $request->validate([
             'nama_toko' => 'max:255|required|unique:supplier,nama_toko,' . $id,
             'alamat' => 'max:255|required',
-            'no_telp' => 'required|integer'
+            'no_telp' => 'required|integer',
+            'jenis_barang_id' => 'required|exists:jenis_barang,id',
         ], [], $customAttributes);
 
         $supplier = SupplierModel::findOrFail($id);
@@ -98,6 +104,7 @@ class SupplierController extends Controller
 
         return redirect('/supplier')->with('success', 'Data Berhasil Diupdate!');
     }
+
 
     /**
      * Remove the specified resource from storage.

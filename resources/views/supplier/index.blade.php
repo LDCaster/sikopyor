@@ -25,6 +25,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Jenis Barang</th>
                                     <th>Nama Toko</th>
                                     <th>Alamat</th>
                                     <th>No Telp</th>
@@ -36,6 +37,7 @@
                                     <tr>
                                         <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <span
                                                 class="fw-medium">{{ $loop->iteration }}</span></td>
+                                        <td>{{ $s->jenis_barang->nama_jenis }}</td>
                                         <td>{{ $s->nama_toko }}</td>
                                         <td>
                                             {{ $s->alamat }}
@@ -97,6 +99,23 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="nameWithTitle" class="form-label">Jenis Barang</label>
+                                <select id="jenis_barang_id" name="jenis_barang_id" class="select2 form-select"
+                                    data-allow-clear="true">
+                                    <option value="">--- Pilih Jenis Barang ---</option>
+                                    @foreach ($jenisbarang as $jb)
+                                        <option value="{{ $jb->id }}">
+                                            {{ $jb->nama_jenis }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('jenis_barang_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="row g-2">
                             <div class="col mb-0">
                                 <label for="emailWithTitle" class="form-label">Alamat</label>
@@ -151,6 +170,24 @@
                         </div>
                         <div class="row g-2">
                             <div class="col mb-0">
+                                <label for="emailWithTitle" class="form-label">Jenis</label>
+                                <select id="edit_jenis_barang_id" name="jenis_barang_id" class="select2 form-select"
+                                    data-allow-clear="true">
+                                    <option value="">--- Pilih Jenis ---</option>
+                                    @foreach ($jenisbarang as $jb)
+                                        <option value="{{ $jb->id }}">
+                                            {{ $jb->nama_jenis }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('jenis_barang_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col mb-0">
                                 <label for="alamat_edit" class="form-label">Alamat</label>
                                 <input type="text" id="alamat_edit" name="alamat" class="form-control"
                                     placeholder="Alamat" />
@@ -197,6 +234,7 @@
                     success: function(data) {
                         console.log(data);
                         $('#nama_toko_edit').val(data.nama_toko);
+                        $('#edit_jenis_barang_id').val(data.jenis_barang_id).trigger('change');
                         $('#alamat_edit').val(data.alamat);
                         $('#no_telp_edit').val(data.no_telp);
                         $('#editForm').attr('action', `/supplier/${id}`); // Perbaikan nama form

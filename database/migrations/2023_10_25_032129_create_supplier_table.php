@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_toko');
             $table->string('alamat');
             $table->string('no_telp');
+            $table->foreignId('jenis_barang_id')->constrained('jenis_barang');
             // Add other attributes as needed
             $table->timestamps();
         });

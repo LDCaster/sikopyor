@@ -42,4 +42,4 @@ Route::resource('jenis-barang', JenisBarangController::class)->middleware('auth'
 Route::resource('produk', ProdukController::class)->middleware('auth');
 Route::resource('barang-masuk', BarangMasukController::class)->middleware('auth');
 Route::resource('kasir', PenjualanController::class)->middleware('auth');
-Route::resource('users', UsersController::class)->middleware('auth');
+Route::resource('users', UsersController::class)->middleware(['auth', 'must-admin']);

@@ -137,12 +137,16 @@ class UsersController extends Controller
         // Update password jika diminta
         if ($request->filled('password')) {
             $input['password'] = bcrypt($request->input('password'));
+        } else {
+            unset($input['password']); // Hapus input password jika tidak diisi
         }
+
         // Update user
         $user->update($input);
 
         return redirect('/users')->with('success', 'Data berhasil diupdate!');
     }
+
 
     /**
      * Remove the specified resource from storage.

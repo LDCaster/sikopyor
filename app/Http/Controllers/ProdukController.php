@@ -17,11 +17,26 @@ class ProdukController extends Controller
      */
     public function index()
     {
+        // Mendapatkan stand dari user yang sedang login
+        $user = auth()->user();
+
+        // Jika user adalah admin, tampilkan semua produk
+        if ($user->role === 'admin') {
+            $produk = ProdukModel::with(['stand', 'satuan', 'jenis_barang'])->get();
+        } else {
+            // Mendapatkan id-stand yang dimiliki oleh user
+            $userStands = $user->stands;
+            $userStandIds = $userStands->pluck('id');
+
+            // Mendapatkan data produk sesuai dengan stand user yang sedang login
+            $produk = ProdukModel::whereIn('stand_id', $userStandIds)->get();
+        }
+
+        // Mengambil data satuan, jenis barang, dan stand untuk ditampilkan
         $namasatuan = SatuanModel::get();
         $namajenis = JenisBarangModel::get();
         $namastand = StandModel::get();
-        $produk = ProdukModel::with(['stand', 'satuan', 'jenis_barang'])->get();
-        // dd($produk);
+
         return view('produk.index', [
             'title' => 'Data Produk',
             'produk' => $produk,
@@ -30,6 +45,9 @@ class ProdukController extends Controller
             'namastand' => $namastand
         ]);
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -97,7 +115,7 @@ class ProdukController extends Controller
 
         $request->validate([
             'stand_id' => 'required|max:255',
-            'nama_produk'  => 'required|max:255',
+            'nama_produk'  => 'required|max:255|unique:produk,nama_produk,NULL,id,stand_id,' . $request->stand_id,
             'harga_produk'  => 'required|integer',
             'stock'  => 'required|integer',
             'satuan_id'  => 'required|max:255',
@@ -128,6 +146,7 @@ class ProdukController extends Controller
         $produk = ProdukModel::create($input);
         return redirect('/produk')->with('success', 'Data Berhasil Ditambahkan!');
     }
+
 
 
     /**
@@ -176,7 +195,7 @@ class ProdukController extends Controller
 
         $request->validate([
             'stand_id' => 'required|max:255',
-            'nama_produk'  => 'required|max:255',
+            'nama_produk'  => 'required|max:255|unique:produk,nama_produk,' . $id . ',id,stand_id,' . $request->stand_id,
             'harga_produk'  => 'required|integer',
             'stock'  => 'required|integer',
             'satuan_id'  => 'required|max:255',
@@ -200,6 +219,7 @@ class ProdukController extends Controller
 
         return redirect('/produk')->with('success', 'Data Berhasil Diupdate!');
     }
+
 
     /**
      * Remove the specified resource from storage.

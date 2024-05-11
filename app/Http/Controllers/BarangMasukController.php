@@ -15,14 +15,31 @@ class BarangMasukController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $produk = ProdukModel::with('jenis_barang')->get();
+        } else {
+            $userStands = $user->stands;
+            $userStandIds = $userStands->pluck('id');
+            $produk = ProdukModel::with('jenis_barang')->whereIn('stand_id', $userStandIds)->get();
+        }
+
         $data_barang_masuk = BarangMasukModel::with('produk')->get();
 
-        $produk = ProdukModel::with('jenis_barang')->get();
+        // Filter barang masuk sesuai stand user yang login, kecuali admin
+        if ($user->role !== 'admin') {
+            $data_barang_masuk = $data_barang_masuk->filter(function ($bm) use ($userStandIds) {
+                return $userStandIds->contains($bm->produk->stand_id);
+            });
+        }
 
         $barang_masuk = $data_barang_masuk->map(function ($bm) {
             $bm->formatted_created_at = Carbon::parse($bm->created_at)->format('d F Y');
             return $bm;
         });
+
+        // dd($barang_masuk);
 
         return view('barang_masuk.index', [
             'title' => 'Data Barang Masuk (Stock IN)',
@@ -30,6 +47,8 @@ class BarangMasukController extends Controller
             'produk' => $produk
         ]);
     }
+
+
 
 
     /**

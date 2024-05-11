@@ -11,5 +11,6 @@ class PenjualanModel extends Model
 
     protected $table = 'penjualan';
 
-    protected $guarded = [];
+    // protected $guarded = [];
+    protected $fillable = ['stand', 'tanggal_penjualan', 'kd_penjualan', 'kasir', 'customer', 'total_harga', 'cash', 'change', 'discount'];
 }
