@@ -60,136 +60,143 @@
     <!-- END Modal List Produk-->
 
     <div class="container-xxl flex-grow-1 container-p-y">
-
-        <div class="row mb-5">
-            <div class="col-md">
-                <div class="card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <h6>Invoice</h6>
-                                    <h5 style="font-weight: bold;">{{ $newKode }}</h5>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="tanggal_masuk" class="form-label"
-                                            style="font-weight: bold;">Tanggal</label>
+        <form action="{{ route('kasir.store') }}" method="POST" id="formPenjualan">
+            @csrf
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-12">
+                                <div class="card-body">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h6>Invoice</h6>
+                                        <h5 style="font-weight: bold;">{{ $newKode }}</h5>
                                     </div>
-                                    <div class="col-md-8">
-                                        <input type="date" id="tanggal_masuk" name="tanggal_masuk" class="form-control"
-                                            readonly />
-                                        @error('tanggal_masuk')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <!-- Input hidden untuk kd_penjualan -->
+                                    <input type="hidden" name="kd_penjualan" id="kd_penjualan"
+                                        value="{{ $newKode }}">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="tanggal_penjualan" class="form-label"
+                                                style="font-weight: bold;">Tanggal</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="date" id="tanggal_penjualan" name="tanggal_penjualan"
+                                                class="form-control" readonly />
+                                            @error('tanggal_penjualan')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="kasir" class="form-label" style="font-weight: bold;">Kasir</label>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="kasir" class="form-label"
+                                                style="font-weight: bold;">Kasir</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="nama" name="nama" class="form-control"
+                                                placeholder="{{ Auth::user()->nama }}" disabled />
+                                            @error('nama')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <input type="text" id="nama" name="nama" class="form-control"
-                                            placeholder="{{ Auth::user()->nama }}" disabled />
-                                        @error('nama')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="tanggal_masuk" class="form-label"
-                                            style="font-weight: bold;">Customer</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" id="customer" name="customere" class="form-control"
-                                            value="Umum" />
-                                        @error('customer')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="customer" class="form-label"
+                                                style="font-weight: bold;">Customer</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="customer" name="customere" class="form-control"
+                                                value="Umum" />
+                                            @error('customer')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md">
-                <div class="card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label for="nameWithTitle" class="form-label">Produk</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" name="stand_id" id="stand_id" class="form-control"
-                                            value="{{ auth()->user()->stands->first()->nama_stand ?? '' }}" hidden>
-                                        <input type="text" name="produk_id" id="produk_id" class="form-control" hidden>
-                                        <input type="text" name="nama_produk" id="nama_produk" class="form-control"
-                                            hidden>
-                                        <input type="text" name="harga_produk" id="harga_produk" class="form-control"
-                                            hidden>
-                                        <input type="text" name="barcode_data" id="barcode_data" class="form-control"
-                                            required autofocus>
-                                    </div>
-                                    <div class="col-md-2" style="margin-left: -20px;">
-                                        <button type="button" class="btn btn-info " data-bs-toggle="modal"
-                                            data-bs-target="#modalItem">
-                                            <i class="bx bx-search-alt-2"></i>
-                                        </button>
-                                    </div>
-                                    @error('tanggal_masuk')
-                                        <div class="text-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="row" style="margin-bottom: 10px;">
-                                    <div class="col-md-4">
-                                        <label for="tanggal_masuk" class="form-label" style="font-weight: bold;">Stock
-                                            Awal</label>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <input type="text" id="stock" name="stock" class="form-control"
-                                            disabled />
-                                        @error('stock')
+                <div class="col-md">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-12">
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="nameWithTitle" class="form-label">Produk</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="stand_id" id="stand_id" class="form-control"
+                                                value="{{ auth()->user()->stands->first()->nama_stand ?? '' }}" hidden>
+                                            <input type="text" name="produk_id" id="produk_id" class="form-control"
+                                                hidden>
+                                            <input type="text" name="nama_produk" id="nama_produk"
+                                                class="form-control" hidden>
+                                            <input type="text" name="harga_produk" id="harga_produk"
+                                                class="form-control" hidden>
+                                            <input type="text" name="barcode_data" id="barcode_data"
+                                                class="form-control" required autofocus>
+                                        </div>
+                                        <div class="col-md-2" style="margin-left: -20px;">
+                                            <button type="button" class="btn btn-info " data-bs-toggle="modal"
+                                                data-bs-target="#modalItem">
+                                                <i class="bx bx-search-alt-2"></i>
+                                            </button>
+                                        </div>
+                                        @error('stand_idx`')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
-                                <div class="row" style="margin-bottom: 34px;">
-                                    <div class="col-md-4">
-                                        <label for="tanggal_masuk" class="form-label"
-                                            style="font-weight: bold;">Jumlah</label>
+                                    <div class="row" style="margin-bottom: 10px;">
+                                        <div class="col-md-4">
+                                            <label for="tanggal_masuk" class="form-label"
+                                                style="font-weight: bold;">Stock
+                                                Awal</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="stock" name="stock" class="form-control"
+                                                disabled />
+                                            @error('stock')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <input type="text" id="jumlah" name="jumlah" class="form-control"
-                                            value="1" />
-                                        @error('jumlah')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
+                                    <div class="row" style="margin-bottom: 34px;">
+                                        <div class="col-md-4">
+                                            <label for="tanggal_masuk" class="form-label"
+                                                style="font-weight: bold;">Jumlah</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="jumlah" name="jumlah" class="form-control"
+                                                value="1" />
+                                            @error('jumlah')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
 
+                                        </div>
+                                        <div class="col-md-8" style="margin-top: -20px; margin-bottom: -18px;">
+                                            <button type="button" id="tambah_button" class="btn btn-primary">
+                                                <i class='bx bx-plus'></i> Tambah
+                                            </button>
+                                            @error('jumlah')
+                                                <div class="text-danger">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     </div>
-                                    <div class="col-md-8" style="margin-top: -20px; margin-bottom: -18px;">
-                                        <button type="button" id="tambah_button" class="btn btn-primary">
-                                            <i class='bx bx-plus'></i> Tambah
-                                        </button>
-                                        @error('jumlah')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
     </div>
     <!--END Tambah Invoice -->
@@ -205,7 +212,7 @@
                         <table class="table table-bordered" id="keranjang">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th style="display: none;">#</th>
                                     <th>Kode Produk</th>
                                     <th>Nama Produk</th>
                                     <th>Price</th>
@@ -258,13 +265,14 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label for="grandTotal" class="form-label" style="font-weight: bold;">Grand
+                                        <label for="total_harga" class="form-label" style="font-weight: bold;">Grand
                                             Total</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <input type="text" id="grandTotal" name="grandTotal" class="form-control"
-                                            value="0" disabled />
+                                        <input type="text" id="total_harga" name="total_harga" class="form-control"
+                                            disabled />
                                     </div>
+                                    <input type="hidden" id="total_harga_input" name="total_harga" />
                                 </div>
                             </div>
                         </div>
@@ -294,25 +302,36 @@
                                             disabled />
                                     </div>
                                 </div>
+
+
+                                <!-- Tambahkan input hidden untuk menyimpan data keranjang (cart) -->
+                                <input type="hidden" name="cartItems" id="cartItems" value="">
+
                                 <button type="submit" id="paymentButton" class="btn btn-info">
                                     <i class='bx bxs-send'></i> Payment Process
                                 </button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
     <!--END Tambah Aksi Payment -->
+
 
     <script>
         // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
         var today = new Date().toISOString().slice(0, 10);
 
-        // Mengatur nilai input tanggal_masuk menjadi tanggal hari ini
-        document.getElementById('tanggal_masuk').value = today;
+        // Mengatur nilai input tanggal_penjualan menjadi tanggal hari ini
+        document.getElementById('tanggal_penjualan').value = today;
 
+        // Ambil nilai kd_penjualan dan simpan dalam input hidden
+        var kdPenjualan = document.getElementById('kd_penjualan').textContent;
+        document.getElementById('kd_penjualan_input').value = kdPenjualan;
 
         @if ($errors->any())
             $(document).ready(function() {
@@ -346,6 +365,7 @@
             // Disable the button to prevent multiple clicks
             $(this).prop('disabled', true);
 
+            var produk_id = $('#produk_id').val();
             var kode_produk = $('#barcode_data').val();
             var nama_produk = $('#nama_produk').val();
             var harga_produk = $('#harga_produk').val();
@@ -388,7 +408,7 @@
                 // Append a new row to the table body
                 $('#keranjang tbody').append(`
             <tr>
-                <td></td>
+                <td style="display: none;">${produk_id}</td>
                 <td>${kode_produk}</td>
                 <td>${nama_produk}</td>
                 <td>${harga_produk}</td>
@@ -422,18 +442,21 @@
 
                 var discountPercentage = parseFloat($('#discount').val()) || 0;
                 var discountAmount = (subtotal * discountPercentage) / 100;
-                var grandTotal = subtotal - discountAmount;
+                var total_harga = subtotal - discountAmount;
 
                 $('#subtotal').val(subtotal.toFixed(2));
                 $('#discountAmount').val(discountAmount.toFixed(2));
-                $('#grandTotal').val(grandTotal.toFixed(2));
+                $('#total_harga').val(total_harga.toFixed(2));
+
+                // Update hidden input for total_harga
+                $('#total_harga_input').val(total_harga.toFixed(2));
             }
 
             // Update change amount
             function updateChange() {
                 var cash = parseFloat($('#cash').val()) || 0;
-                var grandTotal = parseFloat($('#grandTotal').val()) || 0;
-                var change = cash - grandTotal;
+                var total_harga = parseFloat($('#total_harga').val()) || 0;
+                var change = cash - total_harga;
 
                 $('#change').val(change.toFixed(2));
             }
@@ -454,8 +477,8 @@
             // Payment process
             $('#paymentButton').click(function() {
                 var cash = parseFloat($('#cash').val()) || 0;
-                var grandTotal = parseFloat($('#grandTotal').val()) || 0;
-                var change = cash - grandTotal;
+                var total_harga = parseFloat($('#total_harga').val()) || 0;
+                var change = cash - total_harga;
 
                 if (change >= 0) {
                     // Process payment (you can add your logic here)
@@ -479,6 +502,31 @@
                 // Call calculateTotals to update payment info
                 calculateTotals();
             });
+        });
+    </script>
+
+    <script>
+        // Event listener untuk tombol submit
+        $('#paymentButton').click(function(e) {
+            e.preventDefault(); // Mencegah perilaku default dari tombol submit
+
+            // Validasi form di sini jika diperlukan
+
+            // Ambil data dari tabel keranjang (cart) dan simpan dalam bentuk array
+            var cartItems = [];
+            $('#keranjang tbody tr').each(function() {
+                var item = {
+                    produk_id: $(this).find('td:nth-child(1)').text(),
+                    jumlah: $(this).find('td:nth-child(5)').text()
+                };
+                cartItems.push(item);
+            });
+
+            // Simpan data keranjang dalam input hidden
+            $('#cartItems').val(JSON.stringify(cartItems));
+
+            // Submit form
+            $('#formPenjualan').submit();
         });
     </script>
 @endsection
